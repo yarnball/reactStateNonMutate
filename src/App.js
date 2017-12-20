@@ -1,20 +1,46 @@
 import React from 'react';
 
+import React from "react";
+import { render } from "react-dom";
+
 class App extends React.Component {
   state = {
-    search: "",
-    items: [{ foo: "hello", bar: [{baz:12}, {baz:200}] }, { foo: "hi", bar: [] }]
-  };
+      items: [{
+        name: 'hello',
+        id: 20,
+        genre: [{ name: 'baz', id: 2 }, { name: 'foo', id: 200 }],
+      },
+      { name: 'hi', id: 12, genre: [] },]
+    }
 
-  onChange(e, x) {
-    const index = this.state.items.findIndex(itm=>itm.foo === x.foo)
-    const nestedIndex = [this.state.items[index]].map(e => e.bar).pop().findIndex(itm => itm.baz === 200)
-    this.setState({
-      items: this.state.items.map(item => {
-        // console.log('itm in state', item, x)
-        return item === x ? { ...item, foo: e.target.value } : item;
+  onChange(event, clickedItem) {
+    const { items } = this.state
+    const index = items.findIndex(item => item.name === clickedItem.name)
+    const nestedIndex = items[index].genre.findIndex(genre => genre.id === 2)
+    
+    const { value } = event.target
+    this.setState(prevState => ({
+      items: prevState.items.map((item, itemIndex) => {
+        if (index !== itemIndex) {
+          return item
+        }
+    
+        return {
+          ...item,
+          name: 20,
+          genre: item.genre.map((genre, gIndex) => {
+            if (gIndex !== nestedIndex) {
+              return genre  
+            }
+    
+            return {
+              ...genre,
+              name: value,
+            }
+          })
+        }
       })
-    });
+    }))
   }
 
   render() {
@@ -25,9 +51,9 @@ class App extends React.Component {
           return (
             <div>
               {" "}
-              {x.foo}
-              {x.bar.map((itm) => {
-                return <i> {itm.baz}</i>;
+              {x.name}
+              {x.genre.map((itm) => {
+                return <i> {itm.name}</i>;
               })}
               <input onChange={e => this.onChange(e, x)} type="text" />
             </div>
@@ -37,5 +63,9 @@ class App extends React.Component {
     );
   }
 }
+
+
+render(<App />, document.getElementById("root"));
+
 
 export default App;
