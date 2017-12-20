@@ -1,8 +1,5 @@
 import React from 'react';
 
-import React from "react";
-import { render } from "react-dom";
-
 class App extends React.Component {
   state = {
       items: [{
@@ -13,26 +10,24 @@ class App extends React.Component {
       { name: 'hi', id: 12, genre: [] },]
     }
 
-  onChange(event, clickedItem) {
+  onChange = (e, clickedItem) => {
     const { items } = this.state
+    const { value } = e.target
     const index = items.findIndex(item => item.name === clickedItem.name)
     const nestedIndex = items[index].genre.findIndex(genre => genre.id === 2)
     
-    const { value } = event.target
     this.setState(prevState => ({
       items: prevState.items.map((item, itemIndex) => {
         if (index !== itemIndex) {
           return item
         }
-    
         return {
           ...item,
-          name: 20,
+          // name: 'any value here',
           genre: item.genre.map((genre, gIndex) => {
             if (gIndex !== nestedIndex) {
               return genre  
             }
-    
             return {
               ...genre,
               name: value,
@@ -49,11 +44,11 @@ class App extends React.Component {
       <div>
         {items.map((x) => {
           return (
-            <div>
+            <div key={x.id}>
               {" "}
               {x.name}
               {x.genre.map((itm) => {
-                return <i> {itm.name}</i>;
+                return <i key={itm.id}> {itm.name}</i>;
               })}
               <input onChange={e => this.onChange(e, x)} type="text" />
             </div>
@@ -63,9 +58,6 @@ class App extends React.Component {
     );
   }
 }
-
-
-render(<App />, document.getElementById("root"));
 
 
 export default App;
