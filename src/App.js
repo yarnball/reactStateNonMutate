@@ -38,6 +38,15 @@ class App extends React.Component {
     }))
   }
 
+// Updating just 1 field? - Non nested
+  // onChange(e, x) {
+  //   this.setState({
+  //     items: this.state.items.map(item => {
+  //       return item.name === x.name ? { ...item, name: e.target.value } : item
+  //       // That return finds the item with teh
+  //     })
+  //   });
+  // }
   render() {
     const { items } = this.state;
     return (
